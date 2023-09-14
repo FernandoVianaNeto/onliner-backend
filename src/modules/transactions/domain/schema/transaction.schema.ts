@@ -19,16 +19,16 @@ export class Transaction {
   @Prop({ required: true, type: Number })
   value: string;
 
-  @Prop({ required: false, type: String })
+  @Prop({ required: true, type: String })
   document: string;
 
-  @Prop({ required: false, type: String })
+  @Prop({ required: true, type: String })
   card: string;
 
-  @Prop({ required: false, type: String })
+  @Prop({ required: true, type: String })
   storeOwner: string;
 
-  @Prop({ required: false, type: String })
+  @Prop({ required: true, type: String })
   storeName: string;
 }
 
