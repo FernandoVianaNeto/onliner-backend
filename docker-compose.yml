@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  onliner-backend-api:
+    container_name: onliner-backend-api
+    image: onliner-backend-api
+    build:
+      context: .
+      dockerfile: ./.setup/build/Dockerfile
+      target: development
+    command: npm run start:debug
+    env_file:
+      - .env
+    ports:
+      - 5000:5000
+      - 9229:9229
+    expose:
+      - 5000
+      - 9229
+    networks:
+      - onliner-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  onliner-backend-mongo:
+    image: mongo:5.0.3
+    container_name: onliner-backend-mongo
+    volumes:
+      - 'onliner-backend-mongo:/data/db:delegated'
+    ports:
+      - '27017:27017'
+    networks:
+      - onliner-network
+
+networks:
+  onliner-network:
+
+
+volumes:
+  onliner-backend-mongo:
+    driver: local

@@ -1,7 +1,14 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [],
+  imports: [
+    MongooseModule.forRootAsync({
+      useFactory: () => ({
+        uri: process.env.DATABASE_URI,
+      }),
+    }),
+  ],
   controllers: [],
   providers: [],
 })
