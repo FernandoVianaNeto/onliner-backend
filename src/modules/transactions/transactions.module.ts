@@ -23,6 +23,10 @@ import {
     TransactionRepository,
     TransactionRepositoryAdapter,
   ],
-  exports: [TransactionsService],
+  exports: [
+    TransactionsService,
+    TransactionRepository,
+    TransactionRepositoryAdapter,
+  ],
 })
 export class TransactionsModule {}

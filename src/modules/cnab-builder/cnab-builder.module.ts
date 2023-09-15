@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
+import { TransactionsService } from '../transactions/application/services/transaction.service';
+import { TransactionsModule } from '../transactions/transactions.module';
 import { CnabBuilderController } from './adapter/controllers/cnab-builder.controller';
+import { ParseDataFactory } from './application/factories/parse-data.factory';
 import { CnabBuilderService } from './application/services/cnab-builder.service';
 
 @Module({
-  imports: [],
+  imports: [TransactionsModule],
   controllers: [CnabBuilderController],
-  providers: [CnabBuilderService],
+  providers: [CnabBuilderService, TransactionsService, ParseDataFactory],
   exports: [CnabBuilderService],
 })
 export class CnabBuilderModule {}
