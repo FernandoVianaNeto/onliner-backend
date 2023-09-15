@@ -11,7 +11,7 @@ export class CreateTransactionDto {
 
   @IsNumber()
   @IsNotEmpty()
-  value: string;
+  value: number;
 
   @IsString()
   @IsNotEmpty()

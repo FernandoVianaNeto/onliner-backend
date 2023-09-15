@@ -17,7 +17,7 @@ export class Transaction {
   date: string;
 
   @Prop({ required: true, type: Number })
-  value: string;
+  value: number;
 
   @Prop({ required: true, type: String })
   document: string;

@@ -22,7 +22,7 @@ export class CnabBuilderService {
           card: data.card,
           storeName: data.storeName,
           storeOwner: data.storeOwner,
-          value: data.value,
+          value: Number(Number(data.value) / 100),
         });
       }),
     );

@@ -1,10 +1,10 @@
-import { Transaction } from 'src/modules/transactions/domain/schema/transaction.schema';
 import { EPositions } from '../../domain/enums/positions.enum';
 import * as _ from 'lodash';
+import { IDataParser } from '../../domain/interfaces/data-parser.interface';
 
 export class ParseDataFactory {
   async parseData(rawLine: string) {
-    let data: Transaction;
+    let data: IDataParser;
 
     for (
       let caracterCount = 0;
