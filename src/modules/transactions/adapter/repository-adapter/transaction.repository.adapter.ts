@@ -8,6 +8,7 @@ import {
   TransactionDocument,
 } from '../../domain/schema/transaction.schema';
 import * as _ from 'lodash';
+import { ITransactionSum } from '../../domain/interfaces/transactions-sum';
 
 @Injectable()
 export class TransactionRepositoryAdapter extends EntityRepository<TransactionDocument> {
@@ -18,7 +19,9 @@ export class TransactionRepositoryAdapter extends EntityRepository<TransactionDo
     super(transactionModel);
   }
 
-  async findAndSumTotalByStoreName(findTransactionDto: FindTransactionDto) {
+  async findAndSumTotalByStoreName(
+    findTransactionDto: FindTransactionDto,
+  ): Promise<ITransactionSum> {
     const { storeName } = findTransactionDto;
 
     const matchFilter = {
@@ -38,10 +41,11 @@ export class TransactionRepositoryAdapter extends EntityRepository<TransactionDo
       },
     ]);
 
-    const totalFixed = aggregateByStoreName.map((item) => {
+    const totalFixed = aggregateByStoreName.map((item: ITransactionSum) => {
       return {
-        ...item,
+        name: item._id,
         total: Number(item.total.toFixed(2)),
+        transactions: item.transactions,
       };
     });
 
