@@ -16,7 +16,7 @@ export class CnabBuilderService {
     await Promise.all(
       treatedCnabFile.map(async (data: Transaction) => {
         await this.transactionsService.create({
-          type: data.type,
+          type: Number(data.type),
           date: data.date,
           document: data.document,
           card: data.card,

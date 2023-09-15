@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { ETransactionsType } from '../enums/transactions-type.enum';
 
 @Schema({
   timestamps: { createdAt: 'createdAt' },
@@ -10,8 +11,8 @@ export class Transaction {
   @Transform(({ value }) => value.toString())
   _id?: mongoose.Types.ObjectId;
 
-  @Prop({ required: true, type: String })
-  type: string;
+  @Prop({ required: true, type: Number, enum: ETransactionsType })
+  type: number;
 
   @Prop({ required: true, type: String })
   date: string;
@@ -19,7 +20,10 @@ export class Transaction {
   @Prop({ required: true, type: Number })
   value: number;
 
-  @Prop({ required: true, type: String })
+  @Prop({
+    required: true,
+    type: String,
+  })
   document: string;
 
   @Prop({ required: true, type: String })
@@ -30,6 +34,9 @@ export class Transaction {
 
   @Prop({ required: true, type: String })
   storeName: string;
+
+  @Prop({ required: false, type: Boolean, default: true })
+  success: Boolean;
 }
 
 export type TransactionDocument = Transaction & Document;

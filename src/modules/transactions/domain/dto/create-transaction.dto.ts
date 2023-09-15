@@ -1,9 +1,15 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateTransactionDto {
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
-  type: string;
+  type: number;
 
   @IsString()
   @IsNotEmpty()
@@ -28,4 +34,12 @@ export class CreateTransactionDto {
   @IsString()
   @IsNotEmpty()
   storeName: string;
+
+  @IsBoolean()
+  @IsOptional()
+  success?: boolean;
+
+  @IsString()
+  @IsOptional()
+  message?: string;
 }
