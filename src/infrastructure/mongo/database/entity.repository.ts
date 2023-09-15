@@ -7,7 +7,7 @@ import {
   PopulateOptions,
 } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { TFind, TFindOneAndUpdate } from './types';
+import { TFindOneAndUpdate } from './types';
 
 export abstract class EntityRepository<T extends Document> {
   constructor(protected readonly entityModel: Model<T>) {}
@@ -22,35 +22,6 @@ export abstract class EntityRepository<T extends Document> {
       ...projection,
     });
     query.populate(populate);
-    return query.exec();
-  }
-
-  async findDistinct({
-    entityFilterQuery,
-    select,
-    distinct,
-  }: {
-    entityFilterQuery: FilterQuery<T>;
-    select?: string;
-    distinct?: string;
-  }): Promise<T[] | null> {
-    const query = this.entityModel
-      .find(entityFilterQuery, select)
-      .distinct(distinct);
-
-    return query.exec();
-  }
-
-  async newFind(findParams: TFind<T>): Promise<T[] | null> {
-    const { matchFilter, select, populate, sort, take, skip } = findParams;
-
-    const query = this.entityModel
-      .find(matchFilter, select)
-      .sort(sort)
-      .limit(take)
-      .skip(skip);
-    query.populate(populate);
-
     return query.exec();
   }
 
