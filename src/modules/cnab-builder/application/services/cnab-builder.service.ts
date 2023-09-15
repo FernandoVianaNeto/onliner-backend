@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TransactionsService } from '../../../transactions/application/services/transaction.service';
+import { TransactionsService } from '../../../transactions/application/services/transactions.service';
 import * as _ from 'lodash';
 import { ParseDataFactory } from '../factories/parse-data.factory';
 import { Transaction } from '../../../transactions/domain/schema/transaction.schema';
@@ -22,7 +22,7 @@ export class CnabBuilderService {
           card: data.card,
           storeName: data.storeName,
           storeOwner: data.storeOwner,
-          value: Number(Number(data.value) / 100),
+          value: Number((Number(data.value) / 100).toFixed(2)),
         });
       }),
     );
