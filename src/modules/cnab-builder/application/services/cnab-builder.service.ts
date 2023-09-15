@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { TransactionsService } from '../../../transactions/application/services/transaction.service';
 import * as _ from 'lodash';
 import { ParseDataFactory } from '../factories/parse-data.factory';
+import { Transaction } from '../../../transactions/domain/schema/transaction.schema';
 @Injectable()
 export class CnabBuilderService {
   constructor(
@@ -9,13 +10,27 @@ export class CnabBuilderService {
     private readonly parseDataFactory: ParseDataFactory,
   ) {}
 
-  async uploadAndSaveFileDate(rawCnabFile: any) {
+  async uploadAndSaveFileDate(rawCnabFile: Express.Multer.File): Promise<void> {
     const treatedCnabFile = await this.treatCnabFile(rawCnabFile);
 
-    console.log(treatedCnabFile, 'É ESSE LOG AQUI');
+    await Promise.all(
+      treatedCnabFile.map(async (data: Transaction) => {
+        await this.transactionsService.create({
+          type: data.type,
+          date: data.date,
+          document: data.document,
+          card: data.card,
+          storeName: data.storeName,
+          storeOwner: data.storeOwner,
+          value: data.value,
+        });
+      }),
+    );
   }
 
-  async treatCnabFile(rawCnabFile: any) {
+  async treatCnabFile(
+    rawCnabFile: Express.Multer.File,
+  ): Promise<Transaction[]> {
     const cnabToString = rawCnabFile.buffer.toString();
 
     const splitedStringByLines = cnabToString.split('\n');
