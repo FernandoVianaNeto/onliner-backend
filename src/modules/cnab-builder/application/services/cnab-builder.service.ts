@@ -12,7 +12,7 @@ export class CnabBuilderService {
   async uploadAndSaveFileDate(rawCnabFile: any) {
     const treatedCnabFile = await this.treatCnabFile(rawCnabFile);
 
-    console.log(treatedCnabFile);
+    console.log(treatedCnabFile, 'É ESSE LOG AQUI');
   }
 
   async treatCnabFile(rawCnabFile: any) {
@@ -23,12 +23,11 @@ export class CnabBuilderService {
     const cnabData = [];
 
     for (let rawLine of splitedStringByLines) {
-      if (_.isEqual(rawLine, '')) {
-        return;
-      }
-      const lineData = await this.parseDataFactory.parseData(rawLine);
+      if (!_.isEqual(rawLine, '')) {
+        const lineData = await this.parseDataFactory.parseData(rawLine);
 
-      cnabData.push(lineData);
+        cnabData.push(lineData);
+      }
     }
 
     return cnabData;
