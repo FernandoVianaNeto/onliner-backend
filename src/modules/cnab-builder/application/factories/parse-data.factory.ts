@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { IDataParser } from '../../domain/interfaces/data-parser.interface';
 
 export class ParseDataFactory {
-  async parseData(rawLine: string) {
+  async parseData(rawLine: string): Promise<IDataParser> {
     let data: IDataParser;
 
     for (

@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { TransactionsService } from '../../../transactions/application/services/transactions.service';
 import * as _ from 'lodash';
 import { ParseDataFactory } from '../factories/parse-data.factory';
-import { Transaction } from '../../../transactions/domain/schema/transaction.schema';
 import { IUploadAndSaveDataResult } from '../../domain/interfaces/upload-and-save-data-return.interface';
+import { IDataParser } from '../../domain/interfaces/data-parser.interface';
 @Injectable()
 export class CnabBuilderService {
   constructor(
@@ -32,9 +32,9 @@ export class CnabBuilderService {
 
       if (_.isEqual(transactionResult.success, true)) {
         successfullyTransactions.push(transactionResult);
+      } else {
+        unsuccessfullyTransactions.push(transactionResult);
       }
-
-      unsuccessfullyTransactions.push(transactionResult);
     }
 
     return {
@@ -45,12 +45,12 @@ export class CnabBuilderService {
 
   async treatCnabFile(
     rawCnabFile: Express.Multer.File,
-  ): Promise<Transaction[]> {
+  ): Promise<IDataParser[]> {
     const cnabToString = rawCnabFile.buffer.toString();
 
     const splitedStringByLines = cnabToString.split('\n');
 
-    const cnabData = [];
+    const cnabData: IDataParser[] = [];
 
     for (let rawLine of splitedStringByLines) {
       if (!_.isEqual(rawLine, '')) {
