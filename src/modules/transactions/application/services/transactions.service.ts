@@ -35,7 +35,9 @@ export class TransactionsService {
     );
   }
 
-  async findUnsuccessfullyTransactions(findTransactionDto: FindTransactionDto) {
+  async findUnsuccessfullyTransactions(
+    findTransactionDto: FindTransactionDto,
+  ): Promise<Transaction[]> {
     return this.transactionRepository.findUnsuccessfullyTransactions(
       findTransactionDto,
     );
