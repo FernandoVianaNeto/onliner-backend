@@ -19,7 +19,7 @@ import { CreateTransactionDto } from '../../domain/dto/create-transaction.dto';
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
-  @Get('/find')
+  @Get('/find-successfully')
   @ApiOperation({
     summary: 'return the transactions total aggregated by store name',
   })
