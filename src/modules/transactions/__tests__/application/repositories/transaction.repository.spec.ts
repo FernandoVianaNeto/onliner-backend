@@ -1,4 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { TransactionDocument } from '../../../../transactions/domain/schema/transaction.schema';
+import { createTransactionDtoStub } from '../../../../transactions/__mocks__/stub/create-transaction-dto.stub';
+import { transactionSuccessfullyStub } from '../../../../transactions/__mocks__/stub/transaction.stub';
+import { transactionsWithSumStub } from '../../../../transactions/__mocks__/stub/transactions-with-sum.stub';
 import { TransactionRepositoryAdapter } from '../../../../transactions/adapter/repository-adapter/transaction.repository.adapter';
 import { TransactionRepository } from '../../../../transactions/application/repositories/transaction.repository';
 
@@ -14,10 +18,9 @@ describe('TransactionRepository', () => {
         {
           provide: TransactionRepositoryAdapter,
           useFactory: () => ({
-            find: jest.fn(),
+            findUnsuccessfullyTransactions: jest.fn(),
+            findAndSumTotalByStoreName: jest.fn(),
             create: jest.fn(),
-            findByIdAndUpdate: jest.fn(),
-            findByEmail: jest.fn(),
           }),
         },
       ],
@@ -36,92 +39,67 @@ describe('TransactionRepository', () => {
     expect(sut).toBeDefined();
   });
 
-  describe('list', () => {
-    it('should return correct data', async () => {
-      jest
-        .spyOn(repositoryAdapter, 'find')
-        .mockResolvedValueOnce([responsibleStub()] as ResponsibleDocument[]);
-
-      const response = await sut.list();
-
-      expect(response).toEqual([responsibleStub()]);
-    });
-
-    it('should call method with correct params', async () => {
-      const spyOn = jest.spyOn(repositoryAdapter, 'find');
-
-      await sut.list();
-
-      expect(spyOn).toBeCalledWith({});
-    });
-  });
-
   describe('create', () => {
     it('should return correct data', async () => {
       jest
         .spyOn(repositoryAdapter, 'create')
-        .mockResolvedValueOnce(responsibleStub() as ResponsibleDocument);
+        .mockResolvedValueOnce(
+          transactionSuccessfullyStub() as TransactionDocument,
+        );
+      const response = await sut.create(createTransactionDtoStub());
 
-      const response = await sut.create({
-        name: 'test',
-        email: 'test@gmail.com',
-        phone: 'test',
-      });
-
-      expect(response).toEqual(responsibleStub());
+      expect(response).toEqual(transactionSuccessfullyStub());
     });
 
     it('should call method with correct params', async () => {
       const spyOn = jest.spyOn(repositoryAdapter, 'create');
 
-      await sut.create({
-        name: 'test',
-        email: 'test@gmail.com',
-        phone: 'test',
-      });
+      await sut.create(createTransactionDtoStub());
 
-      expect(spyOn).toBeCalledWith({
-        name: 'test',
-        email: 'test@gmail.com',
-        phone: 'test',
-      });
+      expect(spyOn).toBeCalledWith(createTransactionDtoStub());
     });
   });
 
-  describe('update', () => {
+  describe('findAndSumTotalByStoreName', () => {
     it('should return correct data', async () => {
       jest
-        .spyOn(repositoryAdapter, 'findByIdAndUpdate')
-        .mockResolvedValueOnce(responsibleStub() as any);
+        .spyOn(repositoryAdapter, 'findAndSumTotalByStoreName')
+        .mockResolvedValueOnce(transactionsWithSumStub());
 
-      const response = await sut.update({
-        name: 'test',
-        email: 'test@gmail.com',
-        phone: 'test',
-        id: '64ba665bf4333f7b0d86e9ad',
-      });
+      const response = await sut.findAndSumTotalByStoreName({});
 
-      expect(response).toEqual(responsibleStub());
-    });
-  });
-
-  describe('findByEmail', () => {
-    it('should return correct data', async () => {
-      jest
-        .spyOn(repositoryAdapter, 'findByEmail')
-        .mockResolvedValueOnce(responsibleStub() as any);
-
-      const response = await sut.findByEmail('test@gmail.com');
-
-      expect(response).toEqual(responsibleStub());
+      expect(response).toEqual(transactionsWithSumStub());
     });
 
     it('should call method with correct params', async () => {
-      const spyOn = jest.spyOn(repositoryAdapter, 'findByEmail');
+      const spyOn = jest.spyOn(repositoryAdapter, 'findAndSumTotalByStoreName');
 
-      await sut.findByEmail('test@gmail.com');
+      await sut.findAndSumTotalByStoreName({});
 
-      expect(spyOn).toBeCalledWith('test@gmail.com');
+      expect(spyOn).toBeCalledWith({});
+    });
+  });
+
+  describe('findUnsuccessfullyTransactions', () => {
+    it('should return correct data', async () => {
+      jest
+        .spyOn(repositoryAdapter, 'findUnsuccessfullyTransactions')
+        .mockResolvedValueOnce([transactionSuccessfullyStub()]);
+
+      const response = await sut.findUnsuccessfullyTransactions({});
+
+      expect(response).toEqual([transactionSuccessfullyStub()]);
+    });
+
+    it('should call method with correct params', async () => {
+      const spyOn = jest.spyOn(
+        repositoryAdapter,
+        'findUnsuccessfullyTransactions',
+      );
+
+      await sut.findUnsuccessfullyTransactions({});
+
+      expect(spyOn).toBeCalledWith({});
     });
   });
 });
