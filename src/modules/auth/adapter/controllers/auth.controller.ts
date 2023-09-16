@@ -1,5 +1,5 @@
 import { Controller, Post, UseGuards, Request } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from '../../application/auth.service';
 import { ClientSecretAppDto } from '../../domain/dto/client-secret-app.dto';
 import { AppAuthGuard } from '../../domain/guards/app-auth.guard';
@@ -11,6 +11,9 @@ export class AuthController {
 
   @UseGuards(AppAuthGuard)
   @ApiBody({ type: ClientSecretAppDto })
+  @ApiOperation({
+    summary: 'return the access token',
+  })
   @Post('/auth/app')
   loginApp(@Request() req: any) {
     return this.authService.loginApp(req);
