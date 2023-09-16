@@ -1,7 +1,7 @@
 import { Transaction } from '../schema/transaction.schema';
 
 export interface ITransactionSum {
-  _id: string;
+  name: string;
   total: number;
   transactions: Transaction[];
 }

@@ -42,7 +42,7 @@ export class TransactionRepositoryAdapter extends EntityRepository<TransactionDo
       },
     ]);
 
-    const totalFixed = aggregateByStoreName.map((item: ITransactionSum) => {
+    const totalFixed = aggregateByStoreName.map((item) => {
       return {
         name: item._id,
         total: Number(item.total.toFixed(2)),
