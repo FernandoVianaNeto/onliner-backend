@@ -36,7 +36,10 @@ export class Transaction {
   storeName: string;
 
   @Prop({ required: false, type: Boolean, default: true })
-  success: Boolean;
+  success: boolean;
+
+  @Prop({ required: false, type: String })
+  errorMessage: string;
 }
 
 export type TransactionDocument = Transaction & Document;

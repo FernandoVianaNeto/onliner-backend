@@ -41,5 +41,5 @@ export class CreateTransactionDto {
 
   @IsString()
   @IsOptional()
-  message?: string;
+  errorMessage?: string;
 }

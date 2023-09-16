@@ -8,8 +8,21 @@ export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
   @Get('/find')
-  async find(@Query() findTransactionDto: FindTransactionDto) {
-    return this.transactionsService.find(findTransactionDto);
+  async findAndSumTotalByStoreName(
+    @Query() findTransactionDto: FindTransactionDto,
+  ) {
+    return this.transactionsService.findAndSumTotalByStoreName(
+      findTransactionDto,
+    );
+  }
+
+  @Get('/find-unsuccessfully')
+  async findUnsuccessfullyTransactions(
+    @Query() findTransactionDto: FindTransactionDto,
+  ) {
+    return this.transactionsService.findUnsuccessfullyTransactions(
+      findTransactionDto,
+    );
   }
 
   @Post('/create')

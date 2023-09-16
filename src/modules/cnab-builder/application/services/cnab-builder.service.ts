@@ -3,6 +3,7 @@ import { TransactionsService } from '../../../transactions/application/services/
 import * as _ from 'lodash';
 import { ParseDataFactory } from '../factories/parse-data.factory';
 import { Transaction } from '../../../transactions/domain/schema/transaction.schema';
+import { IUploadAndSaveDataResult } from '../../domain/interfaces/upload-and-save-data-return.interface';
 @Injectable()
 export class CnabBuilderService {
   constructor(
@@ -10,22 +11,36 @@ export class CnabBuilderService {
     private readonly parseDataFactory: ParseDataFactory,
   ) {}
 
-  async uploadAndSaveFileDate(rawCnabFile: Express.Multer.File): Promise<void> {
+  async uploadAndSaveFileDate(
+    rawCnabFile: Express.Multer.File,
+  ): Promise<IUploadAndSaveDataResult> {
     const treatedCnabFile = await this.treatCnabFile(rawCnabFile);
 
-    await Promise.all(
-      treatedCnabFile.map(async (data: Transaction) => {
-        await this.transactionsService.create({
-          type: Number(data.type),
-          date: data.date,
-          document: data.document,
-          card: data.card,
-          storeName: data.storeName,
-          storeOwner: data.storeOwner,
-          value: Number((Number(data.value) / 100).toFixed(2)),
-        });
-      }),
-    );
+    const successfullyTransactions = [];
+    const unsuccessfullyTransactions = [];
+
+    for (let data of treatedCnabFile) {
+      const transactionResult = await this.transactionsService.create({
+        type: Number(data.type),
+        date: data.date,
+        document: data.document,
+        card: data.card,
+        storeName: data.storeName,
+        storeOwner: data.storeOwner,
+        value: Number((Number(data.value) / 100).toFixed(2)),
+      });
+
+      if (_.isEqual(transactionResult.success, true)) {
+        successfullyTransactions.push(transactionResult);
+      }
+
+      unsuccessfullyTransactions.push(transactionResult);
+    }
+
+    return {
+      successfully: successfullyTransactions,
+      unsuccessfully: unsuccessfullyTransactions,
+    };
   }
 
   async treatCnabFile(

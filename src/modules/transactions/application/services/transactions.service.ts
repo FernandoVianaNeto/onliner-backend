@@ -1,7 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { documentValidator } from '../../../../infrastructure/validators/document-validator.validator';
 import { CreateTransactionDto } from '../../domain/dto/create-transaction.dto';
 import { FindTransactionDto } from '../../domain/dto/find-transaction.dto';
+import { ITransactionSum } from '../../domain/interfaces/transactions-sum';
 import { Transaction } from '../../domain/schema/transaction.schema';
 import { TransactionRepository } from '../repositories/transaction.repository';
 
@@ -19,17 +20,23 @@ export class TransactionsService {
     if (isValidDocument)
       return this.transactionRepository.create(createTransactionDto);
 
-    await this.transactionRepository.create({
+    return this.transactionRepository.create({
       ...createTransactionDto,
       success: false,
-      message: 'Document string must be a valid cpf',
+      errorMessage: 'Document string must be a valid cpf',
     });
-
-    throw new BadRequestException('Document string must be a valid cpf');
   }
 
-  async find(findTransactionDto: FindTransactionDto) {
+  async findAndSumTotalByStoreName(
+    findTransactionDto: FindTransactionDto,
+  ): Promise<ITransactionSum> {
     return this.transactionRepository.findAndSumTotalByStoreName(
+      findTransactionDto,
+    );
+  }
+
+  async findUnsuccessfullyTransactions(findTransactionDto: FindTransactionDto) {
+    return this.transactionRepository.findUnsuccessfullyTransactions(
       findTransactionDto,
     );
   }

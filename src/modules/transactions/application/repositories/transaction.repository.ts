@@ -21,4 +21,10 @@ export class TransactionRepository {
       findTransactionDto,
     );
   }
+
+  async findUnsuccessfullyTransactions(findTransactionDto: FindTransactionDto) {
+    return this.transactionRepositoryAdapter.findUnsuccessfullyTransactions(
+      findTransactionDto,
+    );
+  }
 }

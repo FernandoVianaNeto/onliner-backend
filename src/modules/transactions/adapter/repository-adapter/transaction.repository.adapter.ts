@@ -26,6 +26,7 @@ export class TransactionRepositoryAdapter extends EntityRepository<TransactionDo
 
     const matchFilter = {
       ...(!_.isUndefined(storeName) && { storeName: { $regex: storeName } }),
+      success: true,
     };
 
     const aggregateByStoreName = await this.aggregate([
@@ -50,5 +51,20 @@ export class TransactionRepositoryAdapter extends EntityRepository<TransactionDo
     });
 
     return totalFixed;
+  }
+
+  async findUnsuccessfullyTransactions(
+    findTransactionDto: FindTransactionDto,
+  ): Promise<Transaction[]> {
+    const { storeName } = findTransactionDto;
+
+    const matchFilter = {
+      ...(!_.isUndefined(storeName) && { storeName: { $regex: storeName } }),
+      success: false,
+    };
+
+    const unsuccessfullyTransactions = await this.find(matchFilter);
+
+    return unsuccessfullyTransactions;
   }
 }
