@@ -5,7 +5,7 @@ import { ClientSecretAppDto } from '../../domain/dto/client-secret-app.dto';
 import { AppAuthGuard } from '../../domain/guards/app-auth.guard';
 
 @Controller()
-@ApiTags('Authorization')
+@ApiTags('Auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

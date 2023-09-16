@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from '../../application/auth.service';
-import { AccessTokenStub } from '../../__mocks__/stubs/auth.stub';
+import { accessTokenStub } from '../../__mocks__/stubs/auth.stub';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -13,7 +13,7 @@ describe('AuthService', () => {
         {
           provide: JwtService,
           useFactory: () => ({
-            sign: jest.fn().mockReturnValueOnce(AccessTokenStub().access_token),
+            sign: jest.fn().mockReturnValueOnce(accessTokenStub().access_token),
           }),
         },
       ],
@@ -63,7 +63,7 @@ describe('AuthService', () => {
 
       const res = await authService.loginApp(request);
 
-      expect(res).toEqual(AccessTokenStub());
+      expect(res).toEqual(accessTokenStub());
     });
   });
 });

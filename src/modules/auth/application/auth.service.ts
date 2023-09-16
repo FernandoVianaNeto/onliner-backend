@@ -17,7 +17,7 @@ export class AuthService {
     return null;
   }
 
-  async loginApp(req: any) {
+  async loginApp(req: any): Promise<{ access_token: string }> {
     const { client, id } = req.user;
 
     const payload = {

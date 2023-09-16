@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AccessTokenStub } from '../../../__mocks__/stubs/auth.stub';
+import { accessTokenStub } from '../../../__mocks__/stubs/auth.stub';
 import { AppTokenStrategy } from '../../../domain/strategies/app-token.strategy';
 
 describe('App Token', () => {
@@ -14,7 +14,7 @@ describe('App Token', () => {
           provide: JwtService,
           useValue: {
             verifyAsync: jest.fn(),
-            sign: jest.fn().mockReturnValueOnce(AccessTokenStub().access_token),
+            sign: jest.fn().mockReturnValueOnce(accessTokenStub().access_token),
           },
         },
       ],
@@ -26,6 +26,7 @@ describe('App Token', () => {
   });
 
   describe('.validate', () => {
+    process.env.JWT_KEY = '123456';
     process.env.CLIENT_APP = 'client_app';
     process.env.SECRET_APP = '123456';
     process.env.ID_APP = '231321';
