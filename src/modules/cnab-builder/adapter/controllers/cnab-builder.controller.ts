@@ -2,15 +2,19 @@ import {
   Controller,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AppTokenGuard } from '../../../auth/domain/guards/app-token.guard';
 import { CnabBuilderService } from '../../application/services/cnab-builder.service';
 import { IUploadAndSaveDataResult } from '../../domain/interfaces/upload-and-save-data-return.interface';
 
 @ApiTags('Cnab-Builder')
+@ApiBearerAuth('app')
 @Controller('cnab-builder')
+@UseGuards(AppTokenGuard)
 export class CnabBuilderController {
   constructor(private readonly cnabBuilderService: CnabBuilderService) {}
 
@@ -25,7 +29,7 @@ export class CnabBuilderController {
       type: 'object',
       properties: {
         file: {
-          type: 'string',
+          type: 'Express.Multer.File',
           format: 'binary',
         },
       },

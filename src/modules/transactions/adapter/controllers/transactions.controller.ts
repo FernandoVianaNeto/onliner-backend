@@ -1,9 +1,12 @@
-import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { TransactionsService } from '../../application/services/transactions.service';
 import { FindTransactionDto } from '../../domain/dto/find-transaction.dto';
+import { AppTokenGuard } from '../../../auth/domain/guards/app-token.guard';
 @ApiTags('Transactions')
 @Controller('transactions')
+@ApiBearerAuth('app')
+@UseGuards(AppTokenGuard)
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
