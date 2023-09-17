@@ -35,3 +35,14 @@ $ yarn test --coverage
 After run the project, you can access the swagger using the endpoint /docs in your browser.
 
 There you can see the parameters of the endpoint, the expected results, the examples parameters and the description of the endpoint.
+
+# Tecnologies
+Nestjs (Node.js framework)
+MongoDB (Database)
+Typescript
+
+# Libraries
+
+Jest (Tests)
+Passport (Authentication)
+Swagger (Documentation)
