@@ -29,7 +29,7 @@ export class CnabBuilderController {
   @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({
     summary:
-      'upload a cnab file, treat data, and save the transactions in database',
+      'upload a cnab file, treat data, and save the transactions into database',
   })
   @ApiBody({
     schema: {
