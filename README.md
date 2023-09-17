@@ -17,9 +17,9 @@ For the database and the app_port, the default constants are already there.
 
 ## Running the app
 
-After followed the above steps
+After followed the steps above,
 
-To start the project, you need to have the docker-compose and docker installed globally in your computer. After this, just run the follow commands:
+To start the project, you need to have the docker-compose and docker globally installed in your computer. After this, just run the follow command:
 
 $ sudo docker-compose (for ubuntu)
 
