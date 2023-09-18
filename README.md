@@ -1,6 +1,7 @@
 ## Description
 
 Api developed to a test for the Onliner company, this api has the porpuse of receive a cnab file and save the transactions data into the database
+
 ## Installation
 
 Before initialize the project, you need to install all the dependencies. To do that, run the follow command:
@@ -14,6 +15,9 @@ $ npm install
 then you need to create the .env file in your project root, following the variables in the .env.example.
 
 For the database and the app_port, the default constants are already there.
+
+OBS: the client_app and the secret_app are the credentials to get the access token at /auth/app endpoint (you can see more informantion in /docs after you run the project)
+OBS: you can use any value in the .env variables, except the app_port and database_uri.
 
 ## Running the app
 
