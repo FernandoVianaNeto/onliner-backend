@@ -10,7 +10,7 @@ export class FindTransactionDto {
     default: '',
     example: 'Store name Example',
     description: 'store name',
-    required: true,
+    required: false,
   })
   storeName?: string;
 }
