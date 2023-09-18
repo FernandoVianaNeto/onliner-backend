@@ -23,7 +23,7 @@ async function bootstrap() {
     .setTitle('Onliner - API')
     .setDescription('Onliner - API')
     .setExternalDoc('Download JSON', '/docs-json')
-    .addBearerAuth({ type: 'http' }, 'App')
+    .addBearerAuth({ type: 'http' }, 'app')
     .build();
 
   const document = SwaggerModule.createDocument(app, swaggerOptions, {
